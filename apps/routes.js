@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get("/sample", (request, response, next) => {
-    response.send("ok");
+    response.send("app router");
 })
 
 module.exports = router;

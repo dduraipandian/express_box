@@ -12,7 +12,7 @@ const winston = require('./logger');
 const app = express();
 const shouldCompress = (req, res) => {
     if (req.headers['x-no-compression']) {
-      return false
+        return false
     }
     return compression.filter(req, res);
 }
@@ -23,15 +23,13 @@ app.use(morgan(':requestID :method :url :status :res[content-length] - :response
 app.use(compression({filter: shouldCompress}));
 app.use(bodyParser.json());
 
-const startServer = () => {
-  winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
-  app.use("*", (request, response, next) => {
-      response.status(404).send("not a valid request.");
-  });
-  app.listen(settings.APP_PORT);
+const startServer = (error404) => {
+    winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
+    app.use("*", error404);
+    app.listen(settings.APP_PORT);
 }
 
 module.exports = {
-  app,
-  startServer
+    app,
+    startServer
 }

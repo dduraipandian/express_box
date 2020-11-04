@@ -10,9 +10,13 @@ winston.info("Sample application configuraiton: %s", appConfig.sampleConfig);
 winston.info("Sample url to try %s", `http://localhost:${settings.APP_PORT}/sample`);
 
 app.get("/sample", (request, response, next) => {
-    response.send("ok");
+    response.send("root router");
 })
 
-app.use('/app', appRouter);
+app.use('/api', appRouter);
 
-startServer();
+const error404 = (request, response, next) => {
+    response.status(404).send("not a valid request.");
+}
+
+startServer(error404);
