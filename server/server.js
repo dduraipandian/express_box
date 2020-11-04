@@ -24,10 +24,10 @@ app.use(compression({filter: shouldCompress}));
 app.use(bodyParser.json());
 
 const startServer = () => {
-  winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`)
+  winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
   app.use("*", (request, response, next) => {
       response.status(404).send("not a valid request.");
-  })
+  });
   app.listen(settings.APP_PORT);
 }
 
