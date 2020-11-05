@@ -1,11 +1,10 @@
-const { Router } = require('express');
 "use strict";
 
 const express = require('express');
+const views = require('./views');
+
 const router = express.Router();
 
-router.get("/sample", (request, response, next) => {
-    response.send("app router");
-})
+router.get("/sample", views.sampleView)
 
 module.exports = router;
