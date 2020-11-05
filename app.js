@@ -15,8 +15,4 @@ app.get("/sample", (request, response, next) => {
 
 app.use('/api', appRouter);
 
-const error404 = (request, response, next) => {
-    response.status(404).send("not a valid request.");
-}
-
-startServer(error404);
+startServer();
