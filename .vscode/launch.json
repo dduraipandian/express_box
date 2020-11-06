@@ -19,7 +19,10 @@
             "program": "${workspaceFolder}/app.js",
             "runtimeExecutable": "nodemon",
             "env": {
-                "LOGLEVEL": "debug"
+                "LOGLEVEL": "debug",
+                "EMAIL_SERVER": "your smtp server",
+                "EMAIL_HOST_USER": "Email user",
+                "EMAIL_HOST_PASSWORD": "Email user password"
             },
             "args": ["--trace-sync-io"],
             "restart": true,
