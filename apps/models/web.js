@@ -14,7 +14,7 @@ class WebModel{
         return this.db.collection(name);
     }
 
-    save() {
+    save(){
         const collection = this.getCollection('web_message')
         collection.insertOne({message: this.message});
     }
