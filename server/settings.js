@@ -8,6 +8,7 @@ const APP_PORT = process.env.PORT || 3001;
 const APP_NAME = path.basename(APP_ROOT);
 const LOGLEVEL = process.env.LOGLEVEL || "info";
 
+const DATABASE_URL = process.env.DATABASE_URL || null;
 const EMAIL_SERVER = process.env.EMAIL_SERVER || null;
 let MAILER_CONFIG;
 
@@ -25,6 +26,7 @@ module.exports = {
     APP_PORT,
     APP_NAME,
     LOGLEVEL,
+    DATABASE_URL
 }
 
 if(MAILER_CONFIG) module.exports['MAILER_CONFIG'] = MAILER_CONFIG

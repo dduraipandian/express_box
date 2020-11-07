@@ -10,6 +10,7 @@ const settings = require('./settings');
 const mailer = require('./mailer');
 const winston = require('./logger');
 const utils = require('../helpers/utils');
+const {connectToDB} = require('./database');
 
 const app = express();
 const shouldCompress = (req, res) => {
@@ -58,8 +59,10 @@ const startServer = (error404=null, errorHandler=null) => {
     app.use("*", error404);
     app.use(errorHandler);
 
-    winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
-    app.listen(settings.APP_PORT);
+    connectToDB(() => {
+        winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
+        app.listen(settings.APP_PORT)
+    });
 }
 
 module.exports = {
