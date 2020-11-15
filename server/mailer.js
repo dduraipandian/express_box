@@ -20,8 +20,8 @@ if(isMailConfigured){
 }
 
 function sendMail(opts, callback=null){
-    opts.subject = settings.MAILER_CONFIG.EMAIL_SUBJECT_PREFIX + opts.subject;
     if(mailer){
+        opts.subject = settings.MAILER_CONFIG.EMAIL_SUBJECT_PREFIX + opts.subject;
         if(callback === null)
             return mailer.sendMail(opts);
         else

@@ -1,5 +1,5 @@
-# Express Box
-Express Box application is boilerplate created from express, morgan, winston logger, nodemailer and gives you a hand to setup your application quickly.
+# Express_box
+Express Box application is boilerplate created from express, mongodb, morgan, winston logger, nodemailer and gives you a hand to setup your application quickly.
 
 # Motivation
 I come from python, Django background. I like how Django structures your application, follows DRY (Don't repeat yourself) principles, provides all the required features for the web development and let you use other libraries as well.
@@ -23,6 +23,8 @@ My goal, here, is not to invent such framework. I like the dajngo approach to st
         + [How to log](#How-to-log)
     * [Nodemailer](#Winston,-Morgan)
         + [How to send email](#How-to-send-email)
+    * [MongoDB](#MongoDB)
+        + [How to mongodb collection in other places](#How-to-mongodb-collection-in-other-places)
     * [Aditional libraries](#aditional-libraries)
 - [Environment variables](#Environment-variables)
     * [Defined Environment variables](#Defined-Environment-variables)
@@ -41,11 +43,12 @@ I tried to create a structure similar to django and kept standards followed for 
     ├── README.md
     ├── app.js --> contains master routes and starts the express application
     ├── apps
-    │   ├── controllers --> directory for application logic
-    │   ├── models --> directory for application models/objects
+    │   ├── controllers
+    │   │   └── web.js --> contains function for router controller
+    │   ├── models
+    │   │   └── web.js --> application models/objects
     │   ├── app_config.js --> app related environment variables
     │   ├── routes.js --> router configuration and improts form views
-    │   └── views.js --> contains function for router callback
     ├── helpers
     │   └── utils.js --> generic function used in the application
     ├── logs
@@ -53,6 +56,7 @@ I tried to create a structure similar to django and kept standards followed for 
     ├── package-lock.json
     ├── package.json
     └── server
+        ├── database.js --> mongodb configuration
         ├── logger.js --> winston logger configurtion
         ├── mailer.js --> nodemailer configuration
         ├── server.js --> contains all express configuration
@@ -154,6 +158,47 @@ const opts = {
 mailer.sendMail(opts).catch(err => winston.error(err))
 ```
 
+## MongoDB
+MongoDB is widely used as backed for nodejs application and it goes well with concurrency with nodejs.
+
+**Before start using, mongodb needs to be setup and service should be running.**
+
+    DATABASE_URL - Mongo DB URI should be set as environment variable to avoid connection string or password in the scripts.
+
+You can check [mongodb](https://docs.mongodb.com/drivers/node/) offical site for more details.
+
+### How to mongodb collection in other places
+
+This is sample model which saves dummy message to the database. Environment variable is included in the vscode lanch.json file.
+
+```javascript
+// path should be relative to your script.
+const {getDatabase} = require('../../server/database');
+
+class WebModel{
+
+    constructor(message){
+        this.message = message;
+    }
+
+    get db(){
+        return getDatabase('web');
+    }
+
+    getCollection(name){
+        return this.db.collection(name);
+    }
+
+    save() {
+        const collection = this.getCollection('web_message')
+        collection.insertOne({message: this.message});
+    }
+}
+
+module.exports = WebModel;
+```
+
+
 ## Aditional libraries
 
 This application use additional libraries for express such as compression, body-parser, uuid.
@@ -176,9 +221,13 @@ console.log(settings.APP_ROOT);
     APP_NAME - Project name. It is derived from root directory.
 
 ### Environment variables you can change
-Nodemailer email configurations are included.
 
     LOGLEVEL - By default, info is set for logging.
+    EMAIL_SERVER - email server. Ex: smtp.gmail.com for gmail
+    EMAIL_HOST_USER - user to authenticate
+    EMAIL_HOST_PASSWORD - password to authenticate
+    EMAIL_PORT - This is optional. If it is not provided, 587 port will be used
+    EMAIL_SUBJECT_PREFIX - This is optional. If it provided, it will be added with email subject
 
 ### VSCode Debugger
 If you use vscode to run in your local, you can use existing **launch.json** and set environment variables there.
