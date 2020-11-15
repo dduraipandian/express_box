@@ -1,4 +1,4 @@
-# Express_box
+# Express Box
 Express Box application is boilerplate created from express, morgan, winston logger, nodemailer and gives you a hand to setup your application quickly.
 
 # Motivation
@@ -67,6 +67,8 @@ Express is a minimal and flexible Node.js web application framework that provide
 
 It has middleware integration feature to intercept request, response, error and routing features to route requests.
 
+You can check about [expressjs](http://expressjs.com/) from official site.
+
 Express configurations are kept under server/server.js.
 1. compression is enabled for sending response.
 2. Morgan is used for logging request/reponse.
@@ -102,12 +104,14 @@ morgan logger middleware logs request/reponse details to the logging.
 
 This application sends morgan logging to winston logger to keep keep everything in a single place.
 
+You can check about [winston](https://www.npmjs.com/package/winston), [morgan](https://www.npmjs.com/package/morgan) from official npm.
+
 Winston configurations are kept under server/logger.js.
 1. Logs are **rotated** after 10MB with date timestamp .
 2. Max 200 files kept after rotation.
 3. Logs are stored under express_box/logs/.
 
-### How to log
+### How to log using winston
 ```javascript
 // path should be relative to your script.
 const winston = require('./logger');
@@ -117,7 +121,10 @@ winston.log("your logging")
 ## Nodemailer
 Simpler mail library for sending emails. This is used to for sending error emails in the default error handler.
 
+You can check about [nodemailer](https://nodemailer.com/) from official site.
+
 Nodemailer configurations are kept under server/mailer.js.
+
 1. To send email, you have to set couple of mandatory environment variables.
 
         EMAIL_SERVER - email server. Ex: smtp.gmail.com for gmail
@@ -187,15 +194,20 @@ Example:
 # How to use this project
 
 1. Clone the repositor from git.
-git clone https://github.com/dduraipandian/express_box.git
+
+    ```git
+    git clone https://github.com/dduraipandian/express_box.git
+    ```
 
 2. Remove .git from express_box as you will be working as yours.
 
-        cd express_box
-        pwd # make sure you are in right path
-        rm -rf .git
-        cd ..
-        mv express_box todo
+    ```shell
+    cd express_box
+    pwd # make sure you are in right path
+    rm -rf .git
+    cd ..
+    mv express_box todo
+    ```
 
 3. Install npm packages.
     cd todo
