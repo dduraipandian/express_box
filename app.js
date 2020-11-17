@@ -13,6 +13,7 @@ app.get("/sample", (request, response, next) => {
     response.send("root router");
 })
 
+const callback = () => winston.info('Thanks for use Express Box.!');
 app.use('/api', appRouter);
 
-startServer();
+startServer({callback});
