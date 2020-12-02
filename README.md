@@ -1,5 +1,12 @@
 # Express_box
-Express Box application is boilerplate created from express, mongodb, morgan, winston logger, nodemailer and gives you a hand to setup your application quickly.
+Express Box application is boilerplate created from express, mongodb, morgan, winston logger, mocha, chai, nodemailer and gives you a hand to setup your application quickly.
+
+1. express - for web application
+2. mongodb - as database
+3. morgan - express request/response logging
+4. winston - for application logging
+5. mocha, chai - as testing suite
+6. nodemail - for mailing purpose
 
 # Motivation
 I come from python, Django background. I like how Django structures your application, follows DRY (Don't repeat yourself) principles, provides all the required features for the web development and let you use other libraries as well.
@@ -25,6 +32,8 @@ My goal, here, is not to invent such framework. I like the dajngo approach to st
         + [How to send email](#How-to-send-email)
     * [MongoDB](#MongoDB)
         + [How to mongodb collection in other places](#How-to-mongodb-collection-in-other-places)
+    * [Mocha, Chai](#Mocha,-Chai)
+        + [How to create and execute tests](#How-to-create-and-execute-tests)
     * [Aditional libraries](#aditional-libraries)
 - [Environment variables](#Environment-variables)
     * [Defined Environment variables](#Defined-Environment-variables)
@@ -47,6 +56,8 @@ I tried to create a structure similar to django and kept standards followed for 
     │   │   └── web.js --> contains function for router controller
     │   ├── models
     │   │   └── web.js --> application models/objects
+    │   └── test
+    │       └── sample.test.js --> test script for your app
     │   ├── app_config.js --> app related environment variables
     │   ├── routes.js --> router configuration and improts form views
     ├── helpers
@@ -79,7 +90,8 @@ Express configurations are kept under server/server.js.
 3. By default, json body parser is used.
 4. (extra) I have created middleware to create unique id for each request and storing in **req._requestID**. You can take advantage of that to track request logging and application logging for request.
 5. (extra) Default 404(**defaultError404**), Error handler(**defaultErrorHandler**) are added to express.
-6. (extra) Email will be sent from error handler if email server is configured.
+6. (extra) addition callBack function can be passed to startServer. This callback will be executed after db initiation and before listening call.
+7. (extra) Email will be sent from error handler if email server is configured.
 
 ### How to start your server
 ```node
@@ -89,8 +101,9 @@ node express_box/app.js
 app.js have below way to start. It is little different than normal app.listen(port).
 ```javascript
 const { app, startServer } = require('./server/server');
+const callBack = () => console.log("This will be excuted right before listen and after all db connection initiation.");
 // application comes with default handler. But if you want to add your own, you can pass it with start server.
-startServer(Error404, ErrorHandler)
+startServer({Error404, ErrorHandler, callBack})
 ```
 
 ### How to add routes
@@ -198,6 +211,34 @@ class WebModel{
 module.exports = WebModel;
 ```
 
+## Mocha, Chai
+
+Testing is always important part of any application. Mocha provides better testing environment to the node js application as grouping tests, reporting and configure to run tests in parallel and chai adds asserts to mocha to make testing easy for us.
+
+You can check [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/) from offical site for more details.
+
+
+Test key is already added to the package.json file. It is modified to pick any test files under any application you create.
+
+You can modify the command as you see fit for your purpose.
+
+    Example:
+
+    APP_ROOT/todo/test/*.js
+    APP_ROOT/notify/test/*.js
+
+```javascript
+"scripts": {
+    "test": "mocha ./**/test",
+    "start": "nodemon app.js"
+}
+```
+
+### How to create and execute tests
+
+1. Create 'test' folder under your application.
+2. Write your tests under 'test' directory.
+3. run `npm test` from the APP_ROOT directory.
 
 ## Aditional libraries
 

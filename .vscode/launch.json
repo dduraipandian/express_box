@@ -20,7 +20,7 @@
             "runtimeExecutable": "nodemon",
             "env": {
                 "LOGLEVEL": "debug",
-                "DATABASE_URL": "'mongodb://localhost:27017/admin'",
+                "DATABASE_URL": "mongodb://localhost:27017/admin",
                 "EMAIL_SERVER": "your smtp server",
                 "EMAIL_HOST_USER": "Email user",
                 "EMAIL_HOST_PASSWORD": "Email user password"

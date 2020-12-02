@@ -52,7 +52,12 @@ const defaultErrorHandler = (err, req, res, next) => {
         return res.status(500).send("not able to process request.");
 }
 
-const startServer = (error404=null, errorHandler=null, callback=null) => {
+const listen = () => {
+    winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
+        app.listen(settings.APP_PORT);
+}
+
+const startServer = ({error404=null, errorHandler=null, callback=null}) => {
     error404 = error404? error404: defaultError404;
     errorHandler = errorHandler? errorHandler: defaultErrorHandler;
 
@@ -60,9 +65,8 @@ const startServer = (error404=null, errorHandler=null, callback=null) => {
     app.use(errorHandler);
 
     connectToDB(() => {
-        winston.info(`Application - ${settings.APP_NAME.toLocaleUpperCase()} is running on port ${settings.APP_PORT}`);
-        if(callBack) callback()
-        app.listen(settings.APP_PORT)
+        if(callback) callback();
+        listen();
     });
 }
 
