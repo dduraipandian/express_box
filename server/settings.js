@@ -3,6 +3,7 @@
 const path = require('path');
 
 const APP_ROOT = require.main.path;
+const VIEW_PATH = path.join(APP_ROOT, 'views');
 
 const APP_PORT = process.env.PORT || 3001;
 const APP_NAME = path.basename(APP_ROOT);
@@ -22,6 +23,7 @@ if(EMAIL_SERVER){
 }
 
 module.exports = {
+    VIEW_PATH,
     APP_ROOT,
     APP_PORT,
     APP_NAME,

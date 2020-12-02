@@ -1,7 +1,9 @@
 "use strict";
 
 const {v4:uuidv4} = require('uuid');
+const path = require('path');
 const express = require('express');
+const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
@@ -13,6 +15,9 @@ const utils = require('../helpers/utils');
 const {connectToDB} = require('./database');
 
 const app = express();
+app.engine('hbs', exphbs());
+app.set('view engine', 'hbs');
+
 const shouldCompress = (req, res) => {
     if (req.headers['x-no-compression']) {
         return false
@@ -25,9 +30,11 @@ app.use((req, res, next) => { req._requestID = uuidv4(); next();})
 app.use(morgan(':requestID :method :url :status :res[content-length] - :response-time ms', { stream: winston.stream }));
 app.use(compression({filter: shouldCompress}));
 app.use(bodyParser.json());
+app.use(express.static(path.join(settings.APP_ROOT, 'public')))
 
 const defaultError404 = (request, response, next) => {
-    return response.status(404).send("not a valid request.");
+    // return response.status(404).send("not a valid request.");
+    return response.status(404).sendFile(path.join(settings.VIEW_PATH, "404.html"));
 }
 
 const defaultErrorHandler = (err, req, res, next) => {

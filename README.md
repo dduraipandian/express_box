@@ -1,5 +1,5 @@
 # Express_box
-Express Box application is boilerplate created from express, mongodb, morgan, winston logger, mocha, chai, nodemailer and gives you a hand to setup your application quickly.
+Express Box application is boilerplate created from express, mongodb, morgan, winston logger, mocha, chai, nodemailer and gives you a hand to setup your application quickly. Handler template is integrated with this application. But it can be modified to any template engine.
 
 1. express - for web application
 2. mongodb - as database
@@ -34,6 +34,8 @@ My goal, here, is not to invent such framework. I like the dajngo approach to st
         + [How to mongodb collection in other places](#How-to-mongodb-collection-in-other-places)
     * [Mocha, Chai](#Mocha,-Chai)
         + [How to create and execute tests](#How-to-create-and-execute-tests)
+    * [Template Engine](#Template-Engine)
+        + [How to use the template in view](#How-to-use-the-template-in-view)
     * [Aditional libraries](#aditional-libraries)
 - [Environment variables](#Environment-variables)
     * [Defined Environment variables](#Defined-Environment-variables)
@@ -66,12 +68,18 @@ I tried to create a structure similar to django and kept standards followed for 
     │   └── express_box.log --> application log created by winston
     ├── package-lock.json
     ├── package.json
-    └── server
-        ├── database.js --> mongodb configuration
-        ├── logger.js --> winston logger configurtion
-        ├── mailer.js --> nodemailer configuration
-        ├── server.js --> contains all express configuration
-        └── settings.js --> processing environment variables and global settings for application
+    ├── public --> public static files to server to internet
+    │   └── css
+    │       └── main.css
+    ├── server
+    │   ├── database.js --> mongodb configuration
+    │   ├── logger.js --> winston logger configurtion
+    │   ├── mailer.js --> nodemailer configuration
+    │   ├── server.js --> contains all express configuration
+    │   └── settings.js --> processing environment variables and global settings for application
+    └── views --> html template files to render
+        ├── 404.html
+        └── home.html
 
 # Integrated libraries and thier usage
 
@@ -239,6 +247,45 @@ You can modify the command as you see fit for your purpose.
 1. Create 'test' folder under your application.
 2. Write your tests under 'test' directory.
 3. run `npm test` from the APP_ROOT directory.
+
+## Template Engine
+
+Handler template engine is integrated by default. This can be changed easily by modifying "server/server.js" file.
+
+1. view directory is configured in settings for templates.
+
+```javascript
+const path = require('path');
+const APP_ROOT = require.main.path;
+const VIEW_PATH = path.join(APP_ROOT, 'views');
+```
+
+2. public directory is added to express to server to internet.
+
+```javascript
+const express = require('express');
+const app = express();
+app.engine('hbs', exphbs()); // Express handlebarjs engine
+app.set('view engine', 'hbs');
+app.use(express.static(path.join(settings.APP_ROOT, 'public')))
+```
+
+### How to use the template in view
+
+1. import settings.VIEW_PATH with template to serve in the request as below.
+
+```javascript
+const path = require('path');
+const settings = require('../../server/settings');
+
+const htmlView = (request, response, next) => {
+    response.sendFile(path.join(settings.VIEW_PATH, "home.html"));
+}
+
+module.exports = {
+    htmlView
+}
+```
 
 ## Aditional libraries
 
